@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 class TodoList extends Component {
     render() {
         return (
-            <div>
+            // 占位符
+            <Fragment>
                 <input></input><button>提交</button>
                 <ul>
                     <li>ajhd</li>
                     <li>asjdhksahd</li>
                 </ul>
-            </div>
+            </Fragment>
         )
     }
 }
