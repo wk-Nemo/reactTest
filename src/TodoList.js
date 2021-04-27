@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import TodoItem from './TodoItem';
-// import axios from 'axios'
+import TodoListUI from  './store/TodoListUI'
 import store from './store';
-import {getInputChangeAction, getAddItemAction, getDeleteItemAction} from './store/actionCreator'
+import {getInputChangeAction, getAddItemAction, getDeleteItemAction, getInitList} from './store/actionCreator'
 
 class TodoList extends Component {
 
@@ -22,21 +22,15 @@ class TodoList extends Component {
     // Fragment占位符
     render() {
         return (
-					// 占位符
-					<Fragment>
-							<div>
-									<input
-										value={ this.state.inputValue }
-										onChange={ this.handleInputChange }
-										// ref={(input) => {this.input = input}}
-									/>
-									<button onClick={ this.handleBtnClick }>提交</button>
-							</div>
-							<ul>
-									{ this.getTodoItem() }
-							</ul>
-					</Fragment>
-        )
+					<TodoListUI
+						list = { this.state.list }
+						inputValue = { this.state.inputValue }
+						handleInputChange = { this.handleInputChange }
+						handleBtnClick = { this.handleBtnClick }
+						handleItemDelete = { this.handleItemDelete }
+						getTodoItem = { this.getTodoItem }
+					></TodoListUI>
+				)
     }
 
 		componentDidMount() {
@@ -49,6 +43,8 @@ class TodoList extends Component {
 			// .catch((err) => {
 			// 	console.log(err)
 			// })
+			const action = getInitList();
+			store.dispatch(action)
 			store.subscribe(this.handleStoreChange);
 		}
     
@@ -88,8 +84,8 @@ class TodoList extends Component {
 			this.setState(store.getState())
 		}
 
-		getTodoItem () {
-			return this.state.list.map((item, index) => {
+		getTodoItem (list) {
+			return list.map((item, index) => {
 				return (
 					// 父组件向子组件传值，通过属性的方式
 					// 子组件向父组件传值
